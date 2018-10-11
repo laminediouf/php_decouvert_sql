@@ -1,6 +1,6 @@
 <?php
 include('connectionDb.php');
-$reponse=$bdd->query("SELECT id,first_name,last_name,birth_date FROM table1") or die(print_r($bdd->errorInfo()));
+$reponse=$bdd->query("SELECT id,first_name,last_name,birth_date,DATEDIFF('2018-10-22','2018-10-11') as age FROM table1") or die(print_r($bdd->errorInfo()));
 ?>
 <!doctype html>
 <html lang="fr">
@@ -52,20 +52,13 @@ $reponse=$bdd->query("SELECT id,first_name,last_name,birth_date FROM table1") or
             <div class="panel panel-primary">
                 <table class="table table-striped table-condensed">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Repartition des Etats dans L'ordre Croissant</h3>
-                    </div>
                     <thead>
                     <tr>
                         <th>Id</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Genre</th>
-                        <th>Ip Addresse</th>
-                        <th>Birth date</th>
-                        <th>Country Code</th>
-                        <th>Avatar Url</th>
-                        <th> </th>
+                        <th>Birth Date</th>
+                        <th> Age</th>
 
                     </tr>
                     </thead>
@@ -78,12 +71,8 @@ $reponse=$bdd->query("SELECT id,first_name,last_name,birth_date FROM table1") or
                             <td><?php echo htmlspecialchars($donnees['id']);?></td>
                             <td><?php echo htmlspecialchars($donnees['first_name']);?></td>
                             <td><?php echo htmlspecialchars($donnees['last_name']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['email']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['gender']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['ip_address']);?></td>
                             <td><?php echo htmlspecialchars($donnees['birth_date']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['country_code']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['avatar_url']);?></td>
+                            <td><?php echo htmlspecialchars($donnees['age']);?></td>
                         </tr>
                         <?php
                     }

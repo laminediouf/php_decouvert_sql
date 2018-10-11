@@ -1,6 +1,6 @@
 <?php
 include('connectionDb.php');
-$reponse=$bdd->query("SELECT country_code,COUNT(*) as nbr FROM table1 GROUP BY country_code ORDER BY country_code ASC ") or die(print_r($bdd->errorInfo()));
+$reponse=$bdd->query("SELECT nom,prenom,departement.nom_departement as DEP FROM etudiant_acs,departement WHERE departement.id_departma=etudiant_acs.id_etud ") or die(print_r($bdd->errorInfo()));
 ?>
 <!doctype html>
 <html lang="fr">
@@ -47,17 +47,20 @@ $reponse=$bdd->query("SELECT country_code,COUNT(*) as nbr FROM table1 GROUP BY c
 <body>
 <div class="container">
     <?php include("menu.php"); ?>
+
+    <!-- Affichage des element de la Table -->
     <div class="row">
         <section class="col-sm-12">
             <div class="panel panel-primary">
                 <table class="table table-striped table-condensed">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Repartition des Etats dans L'ordre Croissant</h3>
+                        <h3 class="panel-title">Affichage de tous les gens dont le nom est Palmer</h3>
                     </div>
                     <thead>
                     <tr>
-                        <th>country code</th>
-                        <th>Nombre</th>
+                        <th>Prenom</th>
+                        <th>Nom</th>
+                        <th>Departement</th>
                         <th> </th>
 
                     </tr>
@@ -68,14 +71,14 @@ $reponse=$bdd->query("SELECT country_code,COUNT(*) as nbr FROM table1 GROUP BY c
                     {
                         ?>
                         <tr>
-
-                            <td><?php echo htmlspecialchars($donnees['country_code']);?></td>
-                            <td><?php echo htmlspecialchars($donnees['nbr']);?></td>
+                            <td><?php echo htmlspecialchars($donnees['prenom']);?></td>
+                            <td><?php echo htmlspecialchars($donnees['nom']);?></td>
+                            <td><?php echo htmlspecialchars($donnees['DEP']);?></td>
                         </tr>
                         <?php
                     }
                     ?>
-                    </tbody>
+                 </tbody>
                 </table>
             </div>
         </section>
