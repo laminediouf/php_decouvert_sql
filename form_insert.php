@@ -1,15 +1,18 @@
 <?php
+include 'connectionDb.php';
 
-if(isset($_POST['prenom']) AND isset($_POST['nom']) AND isset($_POST['departement']))
+if(isset($_POST['prenom'])!='' AND isset($_POST['nom'])!='')
 {
-    $req=$bdd->prepare('INSERT INTO table_formulair(prenom,nom,date_insertion) VALUES(:prenom,:nom,CURRENT_DATE()) ') or die(print_r($bbd->errorInfo()));
+    $req=$bdd->prepare('INSERT INTO table_formulair(prenom,nom,date_insertion) VALUES(:prenom,:nom,CURRENT_DATE())') or die(print_r($bbd->errorInfo()));
     $req->execute(array(
         'prenom'=>$_POST['prenom'],
         'nom'=>$_POST['nom'],
-        'departement'=>$_POST['departement'],
     ));
-    echo '<script>alert("Le client a bien ete ajoute dans la base de donnees")</script>';
+    echo '<script>alert("l etudiant a bien ete ajoute dans la base de donnees")</script>';
+}else{
+
 }
+$reponse=$bdd->query("SELECT * FROM table_formulair ") or die(print_r($bdd->errorInfo()));
 
 ?>
 <!doctype html>
@@ -55,10 +58,11 @@ if(isset($_POST['prenom']) AND isset($_POST['nom']) AND isset($_POST['departemen
     </style>
 </head>
 <body>
+<?php include 'menu.php';?>
 <!-- Formulaire d'ajout -->
-<form class="form-horizontal" action="Q8.php" method="post">
+<form class="form-horizontal" action="form_insert.php" method="post">
     <fieldset>
-        <h2 class="titre">Ajout D'etudiant ACS</h2>
+        <h2 class="titre" style="position: center">Ajout D'etudiant ACS</h2>
         <div class="form-group">
             <label class="col-md-4 control-label"></label>
             <div class="col-md-4">
@@ -90,9 +94,10 @@ if(isset($_POST['prenom']) AND isset($_POST['nom']) AND isset($_POST['departemen
                 </div>
                 <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Prenom</th>
                     <th>Nom</th>
-                    <th>Departement</th>
+                    <th>Date de creation</th>
                     <th> </th>
 
                 </tr>
@@ -103,9 +108,10 @@ if(isset($_POST['prenom']) AND isset($_POST['nom']) AND isset($_POST['departemen
                 {
                     ?>
                     <tr>
+                        <td><?php echo htmlspecialchars($donnees['id_form']);?></td>
                         <td><?php echo htmlspecialchars($donnees['prenom']);?></td>
                         <td><?php echo htmlspecialchars($donnees['nom']);?></td>
-                        <td><?php echo htmlspecialchars($donnees['DEP']);?></td>
+                        <td><?php echo htmlspecialchars($donnees['date_insertion']);?></td>
                     </tr>
                     <?php
                 }

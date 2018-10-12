@@ -1,6 +1,21 @@
 <?php
 include('connectionDb.php');
-$reponse=$bdd->query("SELECT nom,prenom,departement.nom_departement as DEP FROM etudiant_acs,departement WHERE departement.id_departma=etudiant_acs.id_etud ") or die(print_r($bdd->errorInfo()));
+
+
+if(isset($_POST['prenom'])!='' AND isset($_POST['nom'])!='' AND isset($_POST['departements'])!='')
+{
+    $req=$bdd->prepare('INSERT INTO etudiant_acs(prenom,nom,id_departma) VALUES(:prenom,:nom,:departements)') or die(print_r($bbd->errorInfo()));
+    $req->execute(array(
+        'prenom'=>$_POST['prenom'],
+        'nom'=>$_POST['nom'],
+        'departements'=>$_POST['departements'],
+    ));
+    echo '<script>alert("l etudiant a bien ete ajoute dans la base de donnees")</script>';
+}else{
+
+}
+
+$reponse=$bdd->query("SELECT nom,prenom,departement.nom_departement as DEP FROM etudiant_acs,departement WHERE departement.id_departma=etudiant_acs.id_departma ") or die(print_r($bdd->errorInfo()));
 ?>
 <!doctype html>
 <html lang="fr">
@@ -47,6 +62,48 @@ $reponse=$bdd->query("SELECT nom,prenom,departement.nom_departement as DEP FROM 
 <body>
 <div class="container">
     <?php include("menu.php"); ?>
+    <!-- Formulaire d'ajout -->
+    <form class="form-horizontal" action="Q8.php" method="post">
+        <fieldset>
+            <h2 class="titre" style="position: center">Ajout D'etudiant ACS</h2>
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                    <input type="text" id="prenom" name="prenom" placeholder="Prenom" class="form-control input-md">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                    <input type="text" id="nom" name="nom" placeholder="Nom" class="form-control input-md">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                    <select name="departements" id="departements" class="form-control input-md">
+                        <?php
+                        $recuperer=$bdd->query('SELECT * FROM departement') or die(print_r($bdd->errorInfo()));
+                        while($donner=$recuperer->fetch())
+                        {
+                            ?>
+                            <option value="<?php echo htmlspecialchars($donner['id_departma']);?>"><?php echo htmlspecialchars($donner['id_departma'].' - '.$donner['nom_departement']);?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4 control-label">
+                    <input type="submit" value="Ajouter un Acs" class="btn btn-info btn-block">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
 
     <!-- Affichage des element de la Table -->
     <div class="row">
@@ -74,16 +131,18 @@ $reponse=$bdd->query("SELECT nom,prenom,departement.nom_departement as DEP FROM 
                             <td><?php echo htmlspecialchars($donnees['prenom']);?></td>
                             <td><?php echo htmlspecialchars($donnees['nom']);?></td>
                             <td><?php echo htmlspecialchars($donnees['DEP']);?></td>
+
                         </tr>
                         <?php
                     }
                     ?>
-                 </tbody>
+                    </tbody>
                 </table>
             </div>
         </section>
     </div>
 </div>
+
 <script src="js/jQuery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>
